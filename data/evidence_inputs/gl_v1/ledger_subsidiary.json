@@ -1,0 +1,92 @@
+{
+  "period": {
+    "cutoff_date": "2026-09-30",
+    "period_end": "2026-09-30",
+    "period_start": "2026-09-01"
+  },
+  "subsidiaries": [
+    {
+      "account": "2202",
+      "closing_credit": 0,
+      "closing_debit": 400000,
+      "entries": [
+        {
+          "balance_credit": 500000,
+          "balance_debit": 0,
+          "credit_cents": 500000,
+          "date": "2026-09-05",
+          "debit_cents": 0,
+          "entry_id": "记-001"
+        },
+        {
+          "balance_credit": 0,
+          "balance_debit": 0,
+          "credit_cents": 0,
+          "date": "2026-09-10",
+          "debit_cents": 500000,
+          "entry_id": "记-002"
+        },
+        {
+          "balance_credit": 0,
+          "balance_debit": 500000,
+          "credit_cents": 0,
+          "date": "2026-09-10",
+          "debit_cents": 500000,
+          "entry_id": "记-003"
+        },
+        {
+          "balance_credit": 0,
+          "balance_debit": 400000,
+          "credit_cents": 100000,
+          "date": "2026-09-20",
+          "debit_cents": 0,
+          "entry_id": "记-004"
+        }
+      ],
+      "name": "应付账款—AP01",
+      "object": "AP01",
+      "opening_credit": 0,
+      "opening_debit": 0,
+      "total_credit_cents": 600000,
+      "total_debit_cents": 1000000
+    },
+    {
+      "account": "1002",
+      "closing_credit": 0,
+      "closing_debit": 1100000,
+      "entries": [
+        {
+          "balance_credit": 0,
+          "balance_debit": 1500000,
+          "credit_cents": 500000,
+          "date": "2026-09-10",
+          "debit_cents": 0,
+          "entry_id": "记-002"
+        },
+        {
+          "balance_credit": 0,
+          "balance_debit": 1000000,
+          "credit_cents": 500000,
+          "date": "2026-09-10",
+          "debit_cents": 0,
+          "entry_id": "记-003"
+        },
+        {
+          "balance_credit": 0,
+          "balance_debit": 1100000,
+          "credit_cents": 0,
+          "date": "2026-09-20",
+          "debit_cents": 100000,
+          "entry_id": "记-004"
+        }
+      ],
+      "name": "银行存款—基本户",
+      "object": "基本户",
+      "opening_credit": 0,
+      "opening_debit": 2000000,
+      "total_credit_cents": 1000000,
+      "total_debit_cents": 100000
+    }
+  ],
+  "version": "gl-1.0"
+}

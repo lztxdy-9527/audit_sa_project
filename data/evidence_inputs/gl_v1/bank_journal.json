@@ -1,0 +1,31 @@
+{
+  "account": "基本户",
+  "closing_balance_cents": 1100000,
+  "entries": [
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "direction": "OUT",
+      "reference": "B001"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "direction": "OUT",
+      "reference": "B002"
+    },
+    {
+      "amount_cents": 100000,
+      "date": "2026-09-20",
+      "direction": "IN",
+      "reference": "BR001"
+    }
+  ],
+  "opening_balance_cents": 2000000,
+  "period": {
+    "cutoff_date": "2026-09-30",
+    "period_end": "2026-09-30",
+    "period_start": "2026-09-01"
+  },
+  "version": "gl-1.0"
+}

@@ -1,0 +1,52 @@
+{
+  "batch": {
+    "batch_id": "task027r1_run_04",
+    "batch_manifest_sha256": "a1215a822254a414075ed13bea59d2922e27bce81cf05e2de3c164c933d8e5f1",
+    "source_workbook": "source/input.xlsx"
+  },
+  "files": {
+    "attachment_index.json": {
+      "byte_size": 1165,
+      "sha256": "cd6d497d4510f4a697a39c31c12b84b3ec39061d952a7a36de1909b7cb9206cd"
+    },
+    "balance_sheet.json": {
+      "byte_size": 631,
+      "sha256": "73d97125bb46bb77cbdfcf3ba7dccb454aaa919c7cb94470350b339515517e5f"
+    },
+    "bank_journal.json": {
+      "byte_size": 629,
+      "sha256": "bf6d93984822839d210c7bbf0cb399eccb3bdd8f3b3905a6ecf56f0fbe5b6eca"
+    },
+    "bank_statement.json": {
+      "byte_size": 629,
+      "sha256": "bf6d93984822839d210c7bbf0cb399eccb3bdd8f3b3905a6ecf56f0fbe5b6eca"
+    },
+    "chart_of_accounts.json": {
+      "byte_size": 513,
+      "sha256": "a0f91e60603d0f49d7111d36a3190d862bd6506104e47aeaa23c2a0c7d34dacd"
+    },
+    "journal_entries.json": {
+      "byte_size": 2249,
+      "sha256": "a87ccf31c55a0aa4bd8e376aec3a1af41f9127dc0f9be9adaf3bac6c2c7fa1ff"
+    },
+    "ledger_general.json": {
+      "byte_size": 768,
+      "sha256": "10c29d2cdb03c7cdcf696aa42650405fa65a2359b9acb5f03f7a48f2b18cbaad"
+    },
+    "ledger_subsidiary.json": {
+      "byte_size": 2289,
+      "sha256": "36f9d081530a9edfbf453df2a248e04bd008ace321d0787cb88b3a0179b46f19"
+    },
+    "trial_balance.json": {
+      "byte_size": 1185,
+      "sha256": "3e80d372e39f475856205cca813840c9b611f2314d2ca199b27f1d0d0f25b0bf"
+    }
+  },
+  "generator_version": "TASK-055-gl-demo-1.0",
+  "period": {
+    "cutoff_date": "2026-09-30",
+    "period_end": "2026-09-30",
+    "period_start": "2026-09-01"
+  },
+  "version": "gl-1.0"
+}

@@ -1,0 +1,29 @@
+{
+  "accounts": [
+    {
+      "code": "1001",
+      "direction": "DEBIT",
+      "name": "库存商品",
+      "type": "ASSET"
+    },
+    {
+      "code": "1002",
+      "direction": "DEBIT",
+      "name": "银行存款",
+      "type": "ASSET"
+    },
+    {
+      "code": "2202",
+      "direction": "CREDIT",
+      "name": "应付账款",
+      "type": "LIABILITY"
+    },
+    {
+      "code": "3001",
+      "direction": "CREDIT",
+      "name": "实收资本",
+      "type": "EQUITY"
+    }
+  ],
+  "version": "gl-1.0"
+}

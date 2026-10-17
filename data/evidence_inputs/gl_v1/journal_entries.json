@@ -1,0 +1,102 @@
+{
+  "entries": [
+    {
+      "attachments": [
+        "V-INV-0001",
+        "V-CTR-0001",
+        "V-GR-0001"
+      ],
+      "date": "2026-09-05",
+      "entry_id": "记-001",
+      "lines": [
+        {
+          "account": "1001",
+          "credit_cents": 0,
+          "debit_cents": 500000,
+          "description": "库存商品入库"
+        },
+        {
+          "account": "2202",
+          "credit_cents": 500000,
+          "debit_cents": 0,
+          "description": "确认应付 AP01"
+        }
+      ],
+      "summary": "采购入库并确认应付"
+    },
+    {
+      "attachments": [
+        "V-APR-0001",
+        "V-BR-0001"
+      ],
+      "date": "2026-09-10",
+      "entry_id": "记-002",
+      "lines": [
+        {
+          "account": "2202",
+          "credit_cents": 0,
+          "debit_cents": 500000,
+          "description": "核销应付 AP01"
+        },
+        {
+          "account": "1002",
+          "credit_cents": 500000,
+          "debit_cents": 0,
+          "description": "银行付款 P01"
+        }
+      ],
+      "summary": "支付 P01 应付"
+    },
+    {
+      "attachments": [
+        "V-APR-0002",
+        "V-BR-0003"
+      ],
+      "date": "2026-09-10",
+      "entry_id": "记-003",
+      "lines": [
+        {
+          "account": "2202",
+          "credit_cents": 0,
+          "debit_cents": 500000,
+          "description": "核销应付 AP01"
+        },
+        {
+          "account": "1002",
+          "credit_cents": 500000,
+          "debit_cents": 0,
+          "description": "银行付款 P02"
+        }
+      ],
+      "summary": "支付 P02 应付"
+    },
+    {
+      "attachments": [
+        "V-BR-0002"
+      ],
+      "date": "2026-09-20",
+      "entry_id": "记-004",
+      "lines": [
+        {
+          "account": "1002",
+          "credit_cents": 0,
+          "debit_cents": 100000,
+          "description": "银行收款 R01"
+        },
+        {
+          "account": "2202",
+          "credit_cents": 100000,
+          "debit_cents": 0,
+          "description": "冲回应付 AP01"
+        }
+      ],
+      "summary": "收到退款 R01"
+    }
+  ],
+  "period": {
+    "cutoff_date": "2026-09-30",
+    "period_end": "2026-09-30",
+    "period_start": "2026-09-01"
+  },
+  "version": "gl-1.0"
+}

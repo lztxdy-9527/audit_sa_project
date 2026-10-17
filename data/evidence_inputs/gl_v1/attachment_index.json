@@ -1,0 +1,53 @@
+{
+  "attachments": [
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-05",
+      "voucher_id": "V-INV-0001",
+      "voucher_type": "INVOICE"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-01",
+      "voucher_id": "V-CTR-0001",
+      "voucher_type": "CONTRACT"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-04",
+      "voucher_id": "V-GR-0001",
+      "voucher_type": "GOODS_RECEIPT"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "voucher_id": "V-APR-0001",
+      "voucher_type": "APPROVAL"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "voucher_id": "V-BR-0001",
+      "voucher_type": "BANK_RECEIPT"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "voucher_id": "V-APR-0002",
+      "voucher_type": "APPROVAL"
+    },
+    {
+      "amount_cents": 500000,
+      "date": "2026-09-10",
+      "voucher_id": "V-BR-0003",
+      "voucher_type": "BANK_RECEIPT"
+    },
+    {
+      "amount_cents": 100000,
+      "date": "2026-09-20",
+      "voucher_id": "V-BR-0002",
+      "voucher_type": "BANK_RECEIPT"
+    }
+  ],
+  "version": "gl-1.0"
+}

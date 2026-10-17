@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+outputs/
+*.log
+pip_install.log
+.t18_fix1.py
+
+# 运行证据（52 GB）不入 git；小样本用 git add -f 单独加入
+data/

@@ -1,0 +1,54 @@
+{
+  "period": {
+    "cutoff_date": "2026-09-30",
+    "period_end": "2026-09-30",
+    "period_start": "2026-09-01"
+  },
+  "rows": [
+    {
+      "account": "1001",
+      "closing_credit": 0,
+      "closing_debit": 500000,
+      "credit_cents": 0,
+      "debit_cents": 500000,
+      "opening_credit": 0,
+      "opening_debit": 0
+    },
+    {
+      "account": "1002",
+      "closing_credit": 0,
+      "closing_debit": 1100000,
+      "credit_cents": 1000000,
+      "debit_cents": 100000,
+      "opening_credit": 0,
+      "opening_debit": 2000000
+    },
+    {
+      "account": "2202",
+      "closing_credit": 0,
+      "closing_debit": 400000,
+      "credit_cents": 600000,
+      "debit_cents": 1000000,
+      "opening_credit": 0,
+      "opening_debit": 0
+    },
+    {
+      "account": "3001",
+      "closing_credit": 2000000,
+      "closing_debit": 0,
+      "credit_cents": 0,
+      "debit_cents": 0,
+      "opening_credit": 2000000,
+      "opening_debit": 0
+    }
+  ],
+  "totals": {
+    "closing_credit": 2000000,
+    "closing_debit": 2000000,
+    "credit_cents": 1600000,
+    "debit_cents": 1600000,
+    "opening_credit": 2000000,
+    "opening_debit": 2000000
+  },
+  "version": "gl-1.0"
+}
