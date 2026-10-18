@@ -5,6 +5,7 @@
 用法：
     python -B scripts/run_all.py --open
     python -B scripts/run_all.py --run-id task059_run_01 --no-open
+    python -B scripts/run_all.py --run-id task059_diff_01 --no-open --allow-differences
 
 步骤（依赖顺序）：
   1) task043 输入契约校验
@@ -15,6 +16,12 @@
   6) 站点（含借贷核对页）
   7) Excel 底稿（含借贷核对页）
   8) 可选：审阅合并（配置 review_notes 时）
+
+`--allow-differences`（默认关闭）：当第 3 步仅因「账证/账实四相符存在差异」而失败时，
+不中止，继续出站点/底稿，整体状态记为 `SUCCESS_WITH_DIFFERENCES`（exit 0），
+并在 `run_summary.steps[].tolerated` 与 `tolerated_steps` 里显式登记。
+其它任何失败（契约、索引、站点、只读漂移等）仍然“失败即停”。
+不开这个开关时，行为与之前完全一致。
 
 约束：只读输入（每步后校验哈希，漂移立即停止）；每次新目录；失败即停、不发布半成品
 index.html；不联网、不安装依赖；只调用项目内脚本与标准库。状态与差异不构成审计结论。
@@ -106,6 +113,28 @@ def default_run_id() -> str:
     return "run_" + datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
+def demo_four_way_differences(demo_dir: Path) -> bool:
+    """第 3 步是否「仅因四相符差异」失败：demo_summary 已写且账证/账实任一非 ALL_MATCHED。
+
+    运行层演示在抛 DemoFailure 之前已经写下 demo_summary.json 与三份报告；因此
+    「demo_summary 存在 + 结论非 ALL_MATCHED」可以把它与契约拒收等更早的失败区分开。
+    """
+    summary_path = Path(demo_dir) / "demo_summary.json"
+    if not summary_path.is_file():
+        return False
+    try:
+        summary = json.loads(summary_path.read_bytes())
+    except (ValueError, OSError):
+        return False
+    four = summary.get("four_way") or {}
+    conclusions = []
+    for key in ("account_voucher", "account_reality"):
+        section = four.get(key) or {}
+        if "conclusion" in section:
+            conclusions.append(section["conclusion"])
+    return any(item != "ALL_MATCHED" for item in conclusions)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="TASK-059 一键对账启动器")
     parser.add_argument("--config", default=str(ROOT / "config/run_all.json"))
@@ -113,6 +142,10 @@ def main(argv=None):
     parser.add_argument("--out-root", dest="out_root", default=None)
     parser.add_argument("--open", dest="open_browser", action="store_true", default=None)
     parser.add_argument("--no-open", dest="open_browser", action="store_false")
+    parser.add_argument("--allow-differences", dest="allow_differences",
+                        action="store_true", default=False,
+                        help="第 3 步仅因账证/账实四相符差异失败时继续出站点，"
+                             "整体记为 SUCCESS_WITH_DIFFERENCES（默认关闭）")
     args = parser.parse_args(argv)
     config_path = Path(args.config)
     if not config_path.is_absolute():
@@ -132,6 +165,7 @@ def main(argv=None):
             raise RunAllError("usage", "run-id 只能包含字母/数字/下划线/点/连字符")
         open_browser = config.get("open_browser", True) \
             if args.open_browser is None else args.open_browser
+        allow_differences = bool(args.allow_differences)
         for label, path in (("batch_dir", batch_dir), ("task043_input_root", task043),
                             ("ledger_db", ledger_db), ("gl_root", gl_root)):
             if not path.exists():
@@ -185,6 +219,7 @@ def main(argv=None):
         steps = []
         overall = "SUCCESS"
         failed_step = None
+        tolerated_steps = []
         for index, (step_id, name) in enumerate(STEPS, start=1):
             command = commands[step_id]
             stdout_path = logs_dir / ("%02d_%s_stdout.txt" % (index, step_id))
@@ -192,30 +227,41 @@ def main(argv=None):
             with stdout_path.open("wb") as out, stderr_path.open("wb") as err:
                 completed = subprocess.run(command, cwd=str(ROOT), stdout=out, stderr=err)
             error_field = None
+            tolerated = False
             if completed.returncode != 0:
-                overall = "FAILED"
-                failed_step = step_id
-                try:
-                    payload = json.loads(stdout_path.read_bytes())
-                    error_field = payload.get("field") or payload.get("error")
-                except (ValueError, OSError):
-                    error_field = None
+                if allow_differences and step_id == "demo" \
+                        and demo_four_way_differences(step_dirs["demo"]):
+                    tolerated = True
+                    tolerated_steps.append(step_id)
+                    error_field = "four_way_differences"
+                else:
+                    overall = "FAILED"
+                    failed_step = step_id
+                    try:
+                        payload = json.loads(stdout_path.read_bytes())
+                        error_field = payload.get("field") or payload.get("error")
+                    except (ValueError, OSError):
+                        error_field = None
             steps.append({"id": step_id, "name": name, "exit_code": completed.returncode,
                           "command": [str(item) for item in command],
                           "stdout": str(stdout_path.relative_to(out_dir)),
                           "stderr": str(stderr_path.relative_to(out_dir)),
-                          "error_field": error_field})
+                          "error_field": error_field,
+                          "tolerated": tolerated})
             after = snapshots(guard_paths)
             if after != before and overall == "SUCCESS":
                 overall = "FAILED"
                 failed_step = "read_only_guard"
                 steps.append({"id": "read_only_guard", "name": "输入只读校验",
                               "exit_code": 1, "command": [], "stdout": None,
-                              "stderr": None, "error_field": "input_drift"})
+                              "stderr": None, "error_field": "input_drift",
+                              "tolerated": False})
             if failed_step:
                 break
+        if overall == "SUCCESS" and tolerated_steps:
+            overall = "SUCCESS_WITH_DIFFERENCES"
         outputs = None
-        if overall == "SUCCESS":
+        if overall in ("SUCCESS", "SUCCESS_WITH_DIFFERENCES"):
             site_dir = step_dirs["site"]
             workbook_dir = step_dirs["workbook"]
             reconcile_dir = step_dirs["gl_reconcile"]
@@ -247,6 +293,9 @@ def main(argv=None):
             "run_id": run_id,
             "overall": overall,
             "failed_step": failed_step,
+            "allow_differences": bool(allow_differences),
+            "tolerated_steps": tolerated_steps,
+            "differences_tolerated": bool(tolerated_steps),
             "steps": steps,
             "outputs": outputs,
             "unperformed": UNPERFORMED,
@@ -257,21 +306,24 @@ def main(argv=None):
                 "review_notes": str(review_path) if review_path else None,
             },
             "boundaries": BOUNDARIES,
-            "note": "一键运行只做机器核对与出页；状态与差异不构成审计结论。",
+            "note": ("一键运行只做机器核对与出页；状态与差异不构成审计结论。"
+                     + ("本次启用 --allow-differences：demo 步的四相符差异被显式容忍，"
+                        "站点照常发布，差异以红色事项呈现。" if tolerated_steps else "")),
         }
         (out_dir / "run_summary.json").write_bytes(
             json.dumps(summary, ensure_ascii=False, indent=2,
                        sort_keys=True).encode("utf-8") + b"\n")
         print(json.dumps({"status": overall, "run_id": run_id,
-                          "outputs": str(out_dir), "failed_step": failed_step},
+                          "outputs": str(out_dir), "failed_step": failed_step,
+                          "differences_tolerated": bool(tolerated_steps)},
                          ensure_ascii=False))
-        if overall == "SUCCESS" and open_browser:
+        if overall in ("SUCCESS", "SUCCESS_WITH_DIFFERENCES") and open_browser:
             index_path = out_dir / "index.html"
             try:
                 os.startfile(str(index_path))  # type: ignore[attr-defined]
             except (AttributeError, OSError):
                 pass
-        return 0 if overall == "SUCCESS" else 1
+        return 0 if overall in ("SUCCESS", "SUCCESS_WITH_DIFFERENCES") else 1
     except RunAllError as exc:
         print(json.dumps({"status": "ERROR", "kind": exc.kind, "error": str(exc)},
                          ensure_ascii=False))

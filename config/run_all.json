@@ -1,9 +1,9 @@
 {
   "inputs": {
     "batch_dir": "data/batches/task027r1_run_04/batch_normal",
-    "task043_input_root": "data/evidence_inputs/task043_v1_1",
+    "task043_input_root": "data/evidence_inputs/demo_from_inbox/task043_input",
     "ledger_db": "data/sqlite_tests/task042_dsh_01/normal/runtime.sqlite3",
-    "gl_root": "data/evidence_inputs/gl_v1"
+    "gl_root": "data/evidence_inputs/demo_from_inbox/gl"
   },
   "output_root": "outputs",
   "open_browser": true,
